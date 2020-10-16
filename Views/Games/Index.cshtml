@@ -1,0 +1,74 @@
+﻿@model IEnumerable<LibaryOfGames.Models.Games>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@{
+    ViewData["Title"] = "Games";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (SignInManager.IsSignedIn(User)) {
+<h1>Index</h1>
+<form asp-controller="Games" asp-action="Index" method="get">
+    <p>
+        
+        Title: <input type="text" name="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<p>
+    <a asp-controller="Reviews" asp-action="index">Reviews</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.GameTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Genre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.published)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.price)
+            </th>
+         
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GameTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Genre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.published)
+                </td>
+                <td>
+                    £ @Html.DisplayFor(modelItem => item.price)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
+                </td>
+                
+            </tr>
+        }
+    </tbody>
+</table>
+}
+else
+{
+<h1> Please login</h1>
+}
